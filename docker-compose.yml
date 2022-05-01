@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  database:
+    container_name: mongo
+    image: 'bitnami/mongodb:latest'
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongo
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_USER=root
+      - MONGODB_ROOT_PASSWORD=prisma
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    ports:
+      - '27017:27017'
+    volumes:
+      - 'mongo-db:/bitnami/mongodb'
+
+  server:
+    container_name: graphql_backend
+    build:
+      context: ./backend
+    volumes:
+      - "./backend:/backend"
+    ports:
+      - "4000:4000"
+
+volumes:
+  mongo-db:
+  server:
+  client:
