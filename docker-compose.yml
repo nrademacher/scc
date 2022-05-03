@@ -42,5 +42,5 @@ services:
 
 volumes:
   mongo-db:
-  server:
-  client:
+  frontend:
+  backend:
