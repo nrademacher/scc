@@ -3,7 +3,7 @@ version: "3.9"
 services:
   database:
     container_name: mongo
-    image: 'bitnami/mongodb:latest'
+    image: "bitnami/mongodb:latest"
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=mongo
       - MONGODB_REPLICA_SET_MODE=primary
@@ -11,9 +11,9 @@ services:
       - MONGODB_ROOT_PASSWORD=prisma
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
     ports:
-      - '27017:27017'
+      - "27017:27017"
     volumes:
-      - 'mongo-db:/bitnami/mongodb'
+      - "mongo-db:/bitnami/mongodb"
 
   server:
     container_name: graphql_backend
@@ -23,6 +23,21 @@ services:
       - "./backend:/backend"
     ports:
       - "4000:4000"
+    depends_on:
+      - mongo
+    restart: always
+
+  client:
+    container_name: nextjs_frontend
+    build:
+      context: ./frontend
+    volumes:
+      - "./frontend:/frontend"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    restart: always
 
 volumes:
   mongo-db:
